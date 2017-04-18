@@ -31,8 +31,8 @@ public class Instrument {
 
 	private final FilteredInstrumenter instrumenter;
 
-	private final File srcdir;
-	private final File destdir;
+	private final File source;
+	private final File dest;
 
 	/**
 	 * Constructor.
@@ -41,8 +41,8 @@ public class Instrument {
 	 *            the options to be applied when instrumenting the classes.
 	 */
 	public Instrument(final InstrumentOptions options) {
-		this.srcdir = options.getSrcdir();
-		this.destdir = options.getDestdir();
+		this.source = options.getSource();
+		this.dest = options.getDestdir();
 		instrumenter = new FilteredInstrumenter(
 				new OfflineInstrumentationAccessGenerator(),
 				new WildcardMatcher(options.getIncludeExpr()),
@@ -57,7 +57,7 @@ public class Instrument {
 	 *             if the task fails to read/write a class.
 	 */
 	public int instrumentAll() throws IOException {
-		final int result = instrumentRecursive(srcdir, destdir);
+		final int result = instrumentRecursive(source, dest);
 		return result + instrumenter.getAdjustment();
 	}
 

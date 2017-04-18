@@ -20,31 +20,31 @@ import org.kohsuke.args4j.Option;
  */
 public class ReportOptions {
 
-	@Option(name = "-input", required = true, usage = "the JaCoCo execution data")
+	@Option(name = "--data", required = true, usage = "path to the execution data that was output by JaCoCo")
 	private File input;
 
-	@Option(name = "-classes", required = true, usage = "directory containing the classes which were instrumented - NOTE: this must point at the original, non-instrumented class files")
+	@Option(name = "--classpath", required = true, usage = "filepath (.jar or directory) containing the classes which were instrumented - NOTE: this must point at the original, non-instrumented class files")
 	private File classes;
 
-	@Option(name = "-source", required = true, usage = "directory containing the source .java files")
+	@Option(name = "--source", required = true, usage = "directory containing the source .java files")
 	private File source;
 
-	@Option(name = "-title", required = true, usage = "title for the report")
+	@Option(name = "--title", required = true, usage = "title to give to the report")
 	private String title;
 
-	@Option(name = "-csv", usage = "file for generating a CSV report")
+	@Option(name = "--csv-out", usage = "file path of CSV report to generate")
 	private File csv;
 
-	@Option(name = "-html", usage = "directory for generating an HTML report")
+	@Option(name = "--html-out", usage = "directory in which to generate an HTML report")
 	private File html;
 
-	@Option(name = "-xml", usage = "file for generating an XML report")
+	@Option(name = "--xml-out", usage = "file path of XML report to generate")
 	private File xml;
 
-	@Option(name = "-source-encoding", usage = "encoding of the source files (default: utf-8)")
+	@Option(name = "--source-encoding", usage = "encoding of the source files (default: utf-8)")
 	private String sourceEncoding = "utf-8";
 
-	@Option(name = "-tabwidth", usage = "width of a TAB in the source files (default: 4)")
+	@Option(name = "--tabwidth", usage = "width of a TAB in the source files (default: 4)")
 	private int tabWidth = 4;
 
 	/**

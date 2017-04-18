@@ -20,16 +20,24 @@ import org.kohsuke.args4j.Option;
  */
 public class InstrumentOptions {
 
-	@Option(name = "-srcdir", required = true, usage = "directory containing the class files to be instrumented")
-	private File srcdir;
+	@Option(name = "--src", required = true, usage = "filepath to instrument. Can be a single class file, a directory, or a .jar")
+	private File src;
 
-	@Option(name = "-destdir", required = true, usage = "directory in which to place the instrumented class files")
-	private File destdir;
+	@Option(name = "--dest", required = true, usage = "file path at which to place instrumented class files. The value of <dest> should be a directory if <src> is a directory, otherwise it should be a file")
+	private File dest;
 
-	@Option(name = "-include", usage = "include filter expression (default: '*')")
+	@Option(name = "--include", usage = "filter expression of class names to include (default: '*') "
+	  + "Individual components can be separated by colons and can contain wildcards. Sample expression: "
+	  + "'org.sample.*:org.example.MyCompany' will match (include) classes whose fully qualified classpaths start "
+	  + "with 'org.sample.' or equal 'org.example.MyCompany'. A class will be instrumented if and only if it matches "
+	  + "at least one inclusion rule and no exclusion rules")
 	private String includeExpr = "*";
 
-	@Option(name = "-exclude", usage = "exclude filter expression (default: '')")
+	@Option(name = "--exclude", usage = "filter expression of class names to exclude (default: '*') "
+	  + "Individual components can be separated by colons and can contain wildcards. Sample expression: "
+	  + "'org.sample.*:org.example.MyCompany' will match (exclude) classes whose fully qualified classpaths start "
+	  + "with 'org.sample.' or equal 'org.example.MyCompany'. A class will be instrumented if and only if it matches "
+	  + "at least one inclusion rule and no exclusion rules")
 	private String excludeExpr = "";
 
 	/**
@@ -37,8 +45,8 @@ public class InstrumentOptions {
 	 * 
 	 * @return the input class file directory
 	 */
-	public File getSrcdir() {
-		return srcdir;
+	public File getSource() {
+		return src;
 	}
 
 	/**
@@ -47,7 +55,7 @@ public class InstrumentOptions {
 	 * @return the output class file directory
 	 */
 	public File getDestdir() {
-		return destdir;
+		return dest;
 	}
 
 	/**
