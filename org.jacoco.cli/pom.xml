@@ -57,18 +57,15 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-dependencies</id>
             <phase>package</phase>
             <goals>
-              <goal>copy-dependencies</goal>
+              <goal>shade</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}</outputDirectory>
-              <overWriteReleases>false</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
             </configuration>
           </execution>
         </executions>
