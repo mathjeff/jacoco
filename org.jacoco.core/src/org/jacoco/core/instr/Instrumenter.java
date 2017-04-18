@@ -105,18 +105,39 @@ public class Instrumenter {
 	public byte[] instrument(final byte[] buffer, final String name)
 			throws IOException {
 		try {
-			if (Java9Support.isPatchRequired(buffer)) {
-				final byte[] result = instrument(
-						new ClassReader(Java9Support.downgrade(buffer)));
-				Java9Support.upgrade(result);
-				return result;
+			boolean patchJava9 = Java9Support.isPatchRequired(buffer);
+			ClassReader classReader;
+			if (patchJava9) {
+				classReader = new ClassReader(Java9Support.downgrade(buffer));
 			} else {
-				return instrument(new ClassReader(buffer));
+				classReader = new ClassReader(buffer);
 			}
+			final byte[] result;
+			if (this.includeClass(classReader)) {
+				result = instrument(classReader);
+			} else {
+				// If we're not instrumenting the class, then return the same bytes
+				return buffer;
+			}
+			if (patchJava9) {
+				Java9Support.upgrade(result);
+			}
+			return result;
 		} catch (final RuntimeException e) {
 			throw instrumentError(name, e);
 		}
 	}
+
+	/**
+	 * Whether to instrument the given class
+	 * @param reader
+	 *            class reader to possibly instrument
+	 * @return whether to instrument it
+	 */
+	protected boolean includeClass(final ClassReader reader) {
+		return true;
+	}
+
 
 	/**
 	 * Creates a instrumented version of the given class if possible.

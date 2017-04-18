@@ -34,17 +34,17 @@ class FilteredInstrumenter extends Instrumenter {
 	}
 
 	@Override
-	public byte[] instrument(final ClassReader reader) {
-		if (!includeClass(reader.getClassName())) {
-			--adjustment;
-			return reader.b;
-		}
-		return super.instrument(reader);
+	protected boolean includeClass(final ClassReader reader) {
+		return this.includeClass(reader.getClassName());
 	}
 
 	private boolean includeClass(final String internalClassName) {
 		final String className = internalClassName.replace('/', '.');
-		return include.matches(className) && !exclude.matches(className);
+		boolean shouldInclude = include.matches(className) && !exclude.matches(className);
+		if (!shouldInclude) {
+			this.adjustment -= 1;
+		}
+		return shouldInclude;
 	}
 
 }
