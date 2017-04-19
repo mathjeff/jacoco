@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
@@ -27,6 +28,7 @@ import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.report.DirectorySourceFileLocator;
 import org.jacoco.report.FileMultiReportOutput;
 import org.jacoco.report.IReportVisitor;
+import org.jacoco.report.MultiSourceFileLocator;
 import org.jacoco.report.csv.CSVFormatter;
 import org.jacoco.report.html.HTMLFormatter;
 import org.jacoco.report.xml.XMLFormatter;
@@ -108,12 +110,23 @@ public class Report {
 			throws IOException {
 		visitor.visitInfo(infoStore.getInfos(), dataStore.getContents());
 
+		MultiSourceFileLocator sourceLocator = new MultiSourceFileLocator(options.getTabWidth());
+
+		String[] sourcePaths = options.getSources().split(",");
+
+                for (int i = 0; i < sourcePaths.length; i++) {
+			File sourcePath = new File(sourcePaths[i]);
+			DirectorySourceFileLocator dirLocator = new DirectorySourceFileLocator(sourcePath,
+					options.getSourceEncoding(),
+					options.getTabWidth());
+			sourceLocator.add(dirLocator);
+		}
+
 		// Populate the report structure with the bundle coverage information.
 		// Call visitGroup if you need groups in your report.
 		visitor.visitBundle(
 				coverage,
-				new DirectorySourceFileLocator(options.getSource(), options
-						.getSourceEncoding(), options.getTabWidth()));
+				sourceLocator);
 
 		// Signal end of structure information to allow report to write all
 		// information out

@@ -23,11 +23,11 @@ public class ReportOptions {
 	@Option(name = "--data", required = true, usage = "path to the execution data that was output by JaCoCo")
 	private File input;
 
-	@Option(name = "--classpath", required = true, usage = "filepath (.jar or directory) containing the classes which were instrumented - NOTE: this must point at the original, non-instrumented class files")
+	@Option(name = "--classes", required = true, usage = "filepath (.jar or directory) containing the classes which were instrumented - NOTE: this must point at the original, non-instrumented class files")
 	private File classes;
 
-	@Option(name = "--source", required = true, usage = "directory containing the source .java files")
-	private File source;
+	@Option(name = "--sources", required = true, usage = "comma-separated list of directories containing the source .java files")
+	private String sources;
 
 	@Option(name = "--title", required = true, usage = "title to give to the report")
 	private String title;
@@ -66,12 +66,12 @@ public class ReportOptions {
 	}
 
 	/**
-	 * Gets the path to the Java source.
+	 * Gets the paths to the Java sources.
 	 * 
-	 * @return the path to the source directory
+	 * @return the paths to the source directories
 	 */
-	public File getSource() {
-		return source;
+	public String getSources() {
+		return sources;
 	}
 
 	/**
