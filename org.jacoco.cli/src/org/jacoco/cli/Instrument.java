@@ -116,8 +116,10 @@ public class Instrument {
 
 		try {
 			final int total = new Instrument(options).instrumentAll();
-			System.out.println(MessageFormat.format("{0} classes instrumented",
-					Integer.valueOf(total)));
+			if (!options.getQuiet()) {
+				System.out.println(MessageFormat.format("{0} classes instrumented",
+						Integer.valueOf(total)));
+			}
 		} catch (final IOException e) {
 			System.err.println("Failed: " + e.getLocalizedMessage());
 			System.exit(1);

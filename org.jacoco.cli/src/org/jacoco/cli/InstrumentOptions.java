@@ -40,6 +40,9 @@ public class InstrumentOptions {
 	  + "at least one inclusion rule and no exclusion rules")
 	private String excludeExpr = "";
 
+	@Option(name = "--quiet", required = false, usage = "silences all non-error output")
+	private boolean quiet = false;
+
 	/**
 	 * Gets the directory containing the class files to be instrumented.
 	 * 
@@ -74,6 +77,14 @@ public class InstrumentOptions {
 	 */
 	public String getExcludeExpr() {
 		return excludeExpr;
+	}
+
+	/**
+	 * Tells whether the user has requested "quiet" execution
+	 * @return whether to be quiet
+	 */
+	public boolean getQuiet() {
+		return quiet;
 	}
 
 }
