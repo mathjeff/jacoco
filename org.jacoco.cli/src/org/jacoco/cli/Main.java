@@ -18,6 +18,13 @@ import java.util.Arrays;
  */
 public class Main {
 
+        private static String usage = "usage: jacoco-cli.jar <command> [<args>]\n"
+		+ "\n"
+		+ "Available commands:\n"
+		+ "\n"
+		+ "   instrument\n"
+		+ "   report\n";
+
 	/**
 	 * Entry point for the command line application.
 	 * 
@@ -26,7 +33,7 @@ public class Main {
 	 */
 	public static void main(final String[] args) {
 		if (args.length == 0) {
-			System.err.println("no command specified");
+			System.err.println(usage);
 			System.exit(1);
 		}
 		final String command = args[0];
