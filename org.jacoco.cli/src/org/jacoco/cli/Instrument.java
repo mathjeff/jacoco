@@ -103,7 +103,7 @@ public class Instrument {
 	 * @param args
 	 *            the command-line arguments.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		final InstrumentOptions options = new InstrumentOptions();
 		final CmdLineParser parser = new CmdLineParser(options);
 		try {
@@ -114,15 +114,10 @@ public class Instrument {
 			System.exit(1);
 		}
 
-		try {
-			final int total = new Instrument(options).instrumentAll();
-			if (!options.getQuiet()) {
-				System.out.println(MessageFormat.format("{0} classes instrumented",
-						Integer.valueOf(total)));
-			}
-		} catch (final IOException e) {
-			System.err.println("Failed: " + e.getLocalizedMessage());
-			System.exit(1);
+		final int total = new Instrument(options).instrumentAll();
+		if (!options.getQuiet()) {
+			System.out.println(MessageFormat.format("{0} classes instrumented",
+					Integer.valueOf(total)));
 		}
 	}
 

@@ -12,6 +12,7 @@
 package org.jacoco.cli;
 
 import java.util.Arrays;
+import java.io.IOException;
 
 /**
  * Main class for the command-line tools.
@@ -31,7 +32,7 @@ public class Main {
 	 * @param args
 	 *            Arguments to the application.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		if (args.length == 0) {
 			System.err.println(usage);
 			System.exit(1);

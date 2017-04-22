@@ -162,7 +162,7 @@ public class Report {
 	 * @param args
 	 *            the command-line arguments.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		final ReportOptions options = new ReportOptions();
 		final CmdLineParser parser = new CmdLineParser(options);
 		try {
@@ -173,12 +173,7 @@ public class Report {
 			System.exit(1);
 		}
 
-		try {
-			new Report(options).run();
-		} catch (final IOException e) {
-			System.err.println("Failed: " + e.getLocalizedMessage());
-			System.exit(1);
-		}
+		new Report(options).run();
 	}
 
 }
