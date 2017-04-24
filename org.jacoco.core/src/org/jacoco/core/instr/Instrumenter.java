@@ -208,7 +208,13 @@ public class Instrumenter {
 	 */
 	public int instrumentAll(final InputStream input,
 			final OutputStream output, final String name) throws IOException {
-		final ContentTypeDetector detector = new ContentTypeDetector(input);
+		final ContentTypeDetector detector;
+		try {
+			detector = new ContentTypeDetector(input);
+		} catch (IOException e) {
+			System.out.println("failed to detect content type of " + name);
+			throw e;
+		}
 		switch (detector.getType()) {
 		case ContentTypeDetector.CLASSFILE:
 			instrument(detector.getInputStream(), output, name);
