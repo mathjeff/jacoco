@@ -25,6 +25,7 @@ import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
+import org.jacoco.core.runtime.WildcardMatcher;
 import org.jacoco.report.DirectorySourceFileLocator;
 import org.jacoco.report.FileMultiReportOutput;
 import org.jacoco.report.IReportVisitor;
@@ -149,7 +150,9 @@ public class Report {
 			}
 
 			final CoverageBuilder coverageBuilder = new CoverageBuilder();
-			final Analyzer analyzer = new Analyzer(dataStore, coverageBuilder);
+			final Analyzer analyzer = new FilteredAnalyzer(dataStore, coverageBuilder,
+					new WildcardMatcher(options.getIncludeExpr()),
+					new WildcardMatcher(options.getExcludeExpr()));
 			analyzer.analyzeAll(classes);
 
 			coverage = coverageBuilder.getBundle(title);

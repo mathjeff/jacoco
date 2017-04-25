@@ -29,6 +29,22 @@ public class ReportOptions {
 	@Option(name = "--sources", required = true, usage = "comma-separated list of directories containing the source .java files")
 	private String sources;
 
+
+	@Option(name = "--include", usage = "filter expression of class names to include (default: '*') "
+	  + "Individual components can be separated by colons and can contain wildcards. Sample expression: "
+	  + "'org.sample.*:org.example.MyCompany' will match (include) classes whose fully qualified classpaths start "
+	  + "with 'org.sample.' or equal 'org.example.MyCompany'. A class will be included in the report if and only if "
+	  + "it matches at least one inclusion rule and no exclusion rules")
+	private String includeExpr = "*";
+
+	@Option(name = "--exclude", usage = "filter expression of class names to exclude (default: '*'). "
+	  + "Individual components can be separated by colons and can contain wildcards. Sample expression: "
+	  + "'org.sample.*:org.example.MyCompany' will match (exclude) classes whose fully qualified classpaths start "
+	  + "with 'org.sample.' or equal 'org.example.MyCompany'. A class will be included in the report if and only if "
+	  + "it matches at least one inclusion rule and no exclusion rules")
+	private String excludeExpr = "";
+
+
 	@Option(name = "--title", required = true, usage = "title to give to the report")
 	private String title;
 
@@ -126,6 +142,24 @@ public class ReportOptions {
 	 */
 	public int getTabWidth() {
 		return tabWidth;
+	}
+
+	/**
+	 * Gets the "include" filter expression.
+	 *
+	 * @return the include filter expression
+	 */
+	public String getIncludeExpr() {
+		return includeExpr;
+	}
+
+	/**
+	 * Gets the "exclude" filter expression.
+	 * 
+	 * @return the exclude filter expression
+	 */
+	public String getExcludeExpr() {
+		return excludeExpr;
 	}
 
 }

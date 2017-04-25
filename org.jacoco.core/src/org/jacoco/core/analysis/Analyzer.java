@@ -104,12 +104,28 @@ public class Analyzer {
 	 * 
 	 * @param reader
 	 *            reader with class definitions
+	 * @return number of classes instrumented
 	 */
-	public void analyzeClass(final ClassReader reader) {
+	public int analyzeClass(final ClassReader reader) {
 		final ClassVisitor visitor = createAnalyzingVisitor(
 				CRC64.checksum(reader.b), reader.getClassName());
-		reader.accept(visitor, 0);
+		if (includeClass(reader)) {
+			reader.accept(visitor, 0);
+			return 1;
+		}
+		return 0;
 	}
+
+        /**
+	 * Whether to include the given class in the report
+	 * @param reader
+	 *            class to possibly include in the report
+	 * @return whether to report it
+	 */
+	protected boolean includeClass(final ClassReader reader) {
+		return true;
+	}
+
 
 	/**
 	 * Analyzes the class definition from a given in-memory buffer.
@@ -118,13 +134,14 @@ public class Analyzer {
 	 *            class definitions
 	 * @param location
 	 *            a location description used for exception messages
+	 * @return number of classes instrumented
 	 * @throws IOException
 	 *             if the class can't be analyzed
 	 */
-	public void analyzeClass(final byte[] buffer, final String location)
+	public int analyzeClass(final byte[] buffer, final String location)
 			throws IOException {
 		try {
-			analyzeClass(
+			return analyzeClass(
 					new ClassReader(Java9Support.downgradeIfRequired(buffer)));
 		} catch (final RuntimeException cause) {
 			throw analyzerError(location, cause);
@@ -138,13 +155,14 @@ public class Analyzer {
 	 *            stream to read class definition from
 	 * @param location
 	 *            a location description used for exception messages
+	 * @return number of classes instrumented
 	 * @throws IOException
 	 *             if the stream can't be read or the class can't be analyzed
 	 */
-	public void analyzeClass(final InputStream input, final String location)
+	public int analyzeClass(final InputStream input, final String location)
 			throws IOException {
 		try {
-			analyzeClass(Java9Support.readFully(input), location);
+			return analyzeClass(Java9Support.readFully(input), location);
 		} catch (final RuntimeException e) {
 			throw analyzerError(location, e);
 		}
@@ -182,8 +200,7 @@ public class Analyzer {
 		}
 		switch (detector.getType()) {
 		case ContentTypeDetector.CLASSFILE:
-			analyzeClass(detector.getInputStream(), location);
-			return 1;
+			return analyzeClass(detector.getInputStream(), location);
 		case ContentTypeDetector.ZIPFILE:
 			return analyzeZip(detector.getInputStream(), location);
 		case ContentTypeDetector.GZFILE:
