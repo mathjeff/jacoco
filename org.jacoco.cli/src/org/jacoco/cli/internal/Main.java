@@ -61,7 +61,10 @@ public class Main extends Command {
 			command.printHelp(out);
 			return 0;
 		} else {
-			return command.execute(out, err);
+			int result = command.execute(out, err);
+			out.flush();
+			err.flush();
+			return result;
 		}
 	}
 
